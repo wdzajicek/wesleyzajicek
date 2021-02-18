@@ -64,8 +64,6 @@ function mainScss() {
 
 // compile 'content.css' which creates custom styles that are available to users the CloudCannon interface.
 function cmsScss() { // DO NOT MINIFY OR COMPRESS CSS OUTPUT!!
-  const cssNanoConfig = [cssnano({ zindex: false })]; // Do NOT minify z-index values because Bootstrap uses values greater that 1,000
-
   return gulp.src(config.cmsScss.src)
     .pipe(sass(config.cmsScss.outputStyle).on('error', sass.logError))
     .pipe(gulp.dest(config.cmsScss.dest.jekyllRoot))
