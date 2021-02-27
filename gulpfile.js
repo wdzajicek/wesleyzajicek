@@ -23,6 +23,8 @@ function clean(done) {
 
 // Run Jekll
 function jekyllBuild(done) {
+  const PRODUCTION = !!(yargs.argv.production); // Run things that say 'PRODCUTION' on production builds only ($ gulp --production)
+
   browserSync.notify(config.jekyll.notification);
   return spawn('jekyll', ['build'], {
     stdio: 'inherit'
@@ -64,11 +66,19 @@ function mainScss() {
 
 // compile 'content.css' which creates custom styles that are available to users the CloudCannon interface.
 function cmsScss() { // DO NOT MINIFY OR COMPRESS CSS OUTPUT!!
-  return gulp.src(config.cmsScss.src)
-    .pipe(sass(config.cmsScss.outputStyle).on('error', sass.logError))
-    .pipe(gulp.dest(config.cmsScss.dest.jekyllRoot))
-    .pipe(gulp.dest(config.cmsScss.dest.buildDir))
-    .pipe(browserSync.stream());
+  const PRODUCTION = !!(yargs.argv.production);
+  const cssNanoConfig = [cssnano({ zindex: false })]; // Do NOT minify z-index values because Bootstrap uses values greater that 1,000
+
+  return gulp.src(config.bootstrap_sass.src)
+  .pipe(sourcemaps.init())
+  .pipe(sass().on('error', sass.logError)) // errors shown in terminal for when you screw up your SASS
+  .pipe(autoprefixer()) // Automatically prefix any CSS that is not compatible with the browsers defined in the gulpconfig
+  .pipe(hashsum({filename: './_data/bootstrap_cache_bust_css.yml', hash: 'md5'}))
+  .pipe(gulpif(PRODUCTION, postcss(cssNanoConfig)))
+  .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+  .pipe(gulp.dest(config.bootstrap_sass.dest.jekyllRoot))
+  .pipe(gulp.dest(config.bootstrap_sass.dest.buildDir))
+  .pipe(browserSync.stream());
 }
 
 // copy static assets/**/* !except for SCSS, CSS, or JS files

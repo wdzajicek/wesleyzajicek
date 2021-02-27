@@ -36,13 +36,12 @@ sass:
   src: "assets/scss/main.scss"
 
 # Gulp task to create stylesheet for custom options in CloudCannon (CMS customizations). Editors can use these styles as option in the CMS.
-cmsScss:
-  outputStyle: {outputStyle: 'expanded'} # Pass an object w/ outputStyle: 'expanded' for CloudCanon custom stylesheet
+bootstrap_sass:
   dest:
     jekyllRoot: "assets/css/"
     buildDir: "_site/assets/css/"
-  notification: "Running cmsScss"
-  src: "assets/scss/content.scss"
+  notification: "Running bootstrap_sass"
+  src: "assets/scss/bootstrap.scss"
 
 # Gulp task to create sitemap on production builds (`$ gulp --production`).
 sitemap:

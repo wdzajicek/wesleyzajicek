@@ -1,5 +1,7 @@
 // Variables
 @import '0-tools/vars';
+@import '0-tools/google-translate-overrides';
+@import '0-tools/gsc-overrides';
 
 // Base items
 @import '1-base/typography';
@@ -9,8 +11,6 @@
 // Modular components
 @import '2-modules/header';
 @import '2-modules/footer';
-@import '2-modules/sliders';
-@import '2-modules/local-nav';
 @import '2-modules/social-icons';
 @import '2-modules/error';
 @import '2-modules/hero-slider';
