@@ -24,9 +24,12 @@ function clean(done) {
 // Run Jekll
 function jekyllBuild(done) {
   const PRODUCTION = !!(yargs.argv.production); // Run things that say 'PRODCUTION' on production builds only ($ gulp --production)
+  let JEKYLL_ARGS = ['build'];
+
+  PRODUCTION ? JEKYLL_ARGS.push('JEKYLL_ENV=production') :  null;
 
   browserSync.notify(config.jekyll.notification);
-  return spawn('jekyll', ['build'], {
+  return spawn('jekyll', JEKYLL_ARGS, {
     stdio: 'inherit'
   })
   .on('close', done);
@@ -65,7 +68,7 @@ function mainScss() {
 }
 
 // compile 'content.css' which creates custom styles that are available to users the CloudCannon interface.
-function cmsScss() { // DO NOT MINIFY OR COMPRESS CSS OUTPUT!!
+function bootstrapSass() { // DO NOT MINIFY OR COMPRESS CSS OUTPUT!!
   const PRODUCTION = !!(yargs.argv.production);
   const cssNanoConfig = [cssnano({ zindex: false })]; // Do NOT minify z-index values because Bootstrap uses values greater that 1,000
 
@@ -79,6 +82,22 @@ function cmsScss() { // DO NOT MINIFY OR COMPRESS CSS OUTPUT!!
   .pipe(gulp.dest(config.bootstrap_sass.dest.jekyllRoot))
   .pipe(gulp.dest(config.bootstrap_sass.dest.buildDir))
   .pipe(browserSync.stream());
+}
+
+// Compile main.css file from sass modules
+function translateScss() {
+  const PRODUCTION = !!(yargs.argv.production);
+  const cssNanoConfig = [cssnano({ zindex: false })];
+
+  return gulp.src(config.translateSass.src)
+    .pipe(sourcemaps.init())
+    .pipe(sass().on('error', sass.logError)) // errors shown in terminal for when you screw up your SASS
+    .pipe(autoprefixer()) // Automatically prefix any CSS that is not compatible with the browsers defined in the gulpconfig
+    .pipe(gulpif(PRODUCTION, postcss(cssNanoConfig))) // {zindex:false} to prevent override of z-index values -- higher z-index's are needed in our projects to bring objects above bootstrap's default z-index values
+    .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+    .pipe(gulp.dest(config.translateSass.dest.jekyllRoot))
+    .pipe(gulp.dest(config.translateSass.dest.buildDir))
+    .pipe(browserSync.stream());
 }
 
 // copy static assets/**/* !except for SCSS, CSS, or JS files
@@ -131,7 +150,11 @@ function watchFiles() {
   // Watch for SASS changes in content.scss
   watch(
     config.watch.sass,
-    cmsScss
+    bootstrapSass
+  );
+  watch(
+    config.watch.sass,
+    translateScss
   );
   // Watchin' for static asset changes (e.g. new images)
   watch(
@@ -151,7 +174,8 @@ const build = series( // Series items need to be executed in a specific order (n
   parallel( // These parallel tasks require the '_site' to be built, but it doesnt really matter what order they execute.
     gulpSitemap,
     mainScss,
-    cmsScss,
+    translateScss,
+    bootstrapSass,
     copy
   ),
 );

@@ -43,6 +43,14 @@ bootstrap_sass:
   notification: "Running bootstrap_sass"
   src: "assets/scss/bootstrap.scss"
 
+# Gulp task to create stylesheet for custom options in CloudCannon (CMS customizations). Editors can use these styles as option in the CMS.
+translateSass:
+  dest:
+    jekyllRoot: "assets/css/"
+    buildDir: "_site/assets/css/"
+  notification: "Running translateScss"
+  src: "assets/scss/translate.scss"
+
 # Gulp task to create sitemap on production builds (`$ gulp --production`).
 sitemap:
   src: # Defines what items should be in used in creating the sitemap.
@@ -62,7 +70,6 @@ watch: # 'Watch' for changes in all the following:
     - "assets/img/**/*"
     - "uploads/**/*"
   sass: "assets/scss/**/*.scss"
-  cmsScss: "assets/scss/**/*.scss"
   pages:
     - "*.{md,html,yml,xml}" # watch the project root.
     - "**/*.{md,html,yml,xml}" # Watch for pages in forlders.

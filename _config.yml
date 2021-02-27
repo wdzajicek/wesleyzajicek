@@ -5,11 +5,10 @@ url: 'https://wesleyzajicek.com' ## NO TRAILING SLASHES!!/<--nope
 timezone: America/Chicago
 google-tag_key: Google Tag Manager key goes here
 translate: true ## Uncomment to activate Google Translate Powers!!
-og_title: WelseyZajicek.com
+og_title: welseyzajicek.com
 og_type:
 og_url: https://wesleyzajcek.com
 og_iamge:
-source: _pages/
 nav_links:
   - link_text: Home
     link_href: ''
