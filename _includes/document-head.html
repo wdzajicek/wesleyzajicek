@@ -3,7 +3,7 @@
   <head>
     <!-- Meta -->
     <meta charset="utf-8">
-    <title>{{page.title}} | {{site.title}}</title>
+    <title>{% if page.title == 'Welcome' %}{{site.title}} | {{page.title}}{% else %}{{page.title}} | {{site.title}}{% endif %}</title>
     <meta name="description" content="{{page.description}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 {% include preconnect.html %}

@@ -1,0 +1,40 @@
+.svg__brand .st0{fill:none;}
+.svg__brand .st1{fill:#FEFEFE;}
+.svg__brand .st2{fill:#4B5558;}
+.svg__brand .st3{fill:#6FAEE9;}
+.svg__brand .st4{fill:#5D88C6;}
+.svg__brand .st5{fill:#5A6F8F;}
+.svg__brand .st6{fill:#98CDEF;}
+.svg__brand .st7{fill:#FDF7E5;}
+.svg__brand .st8{fill:none;stroke:#333333;stroke-width:6.7468;stroke-miterlimit:10;}
+
+.svg--white {
+  fill: $white;
+}
+
+.svg__name {
+  max-width: 100%;
+  height: auto;
+  opacity: .5;
+}
+
+.parallax {
+  perspective: 1px;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.parallax__layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 100vh 0;
+}
+.parallax__layer--base {
+  transform: translateZ(0);
+}
+.parallax__layer--back {
+  transform: translateZ(-1px) scale(2);
+}

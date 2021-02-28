@@ -1,3 +1,8 @@
 // Typography styles (site specific)
 // ===============================
 
+.typography__footer-heading {
+  font-family: $font-family-base;
+  font-size: 3rem;
+  font-weight: $font-weight-bold;
+}
